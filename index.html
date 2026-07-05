@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIMISM___ // LOADOUT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0F1923;
+    --panel:#182530;
+    --panel-edge:#25333F;
+    --red:#FF4655;
+    --teal:#46C3B2;
+    --text:#ECE8E1;
+    --text-dim:#8B96A3;
+    --gold:#C9A227;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Barlow',sans-serif;
+    background-image:
+      linear-gradient(rgba(70,195,178,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(70,195,178,.04) 1px, transparent 1px);
+    background-size:36px 36px;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background:repeating-linear-gradient(180deg, rgba(0,0,0,0) 0 3px, rgba(0,0,0,.08) 3px 4px);
+    pointer-events:none;
+    z-index:100;
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--red); color:var(--void);}
+  .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--teal);
+  }
+
+  /* HEADER — RANK CARD */
+  header{
+    max-width:920px;
+    margin:0 auto;
+    padding:48px 20px 20px;
+  }
+  .rank-card{
+    background:linear-gradient(120deg, var(--panel) 0%, #101B24 100%);
+    border:1px solid var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%);
+    padding:34px 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .rank-card::after{
+    content:'';
+    position:absolute; top:0; right:0; width:120px; height:100%;
+    background:linear-gradient(115deg, transparent 40%, rgba(255,70,85,.12) 41%, transparent 43%);
+  }
+  .rank-top{
+    display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;
+  }
+  h1{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.2rem,7vw,3.6rem);
+    letter-spacing:1px;
+    line-height:1;
+    color:var(--text);
+  }
+  h1 span{color:var(--red);}
+  .role-line{
+    margin-top:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--text-dim);
+    letter-spacing:1px;
+  }
+  .rank-badge{
+    text-align:right;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .rank-badge .peak{
+    font-size:10px;
+    color:var(--text-dim);
+    letter-spacing:2px;
+  }
+  .rank-badge .value{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:1.6rem;
+    color:var(--gold);
+    letter-spacing:1px;
+  }
+  .stat-row{
+    display:flex; gap:0;
+    margin-top:26px;
+    border-top:1px solid var(--panel-edge);
+    padding-top:18px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1;
+    min-width:120px;
+    padding:0 18px;
+    border-left:1px solid var(--panel-edge);
+  }
+  .stat:first-child{border-left:none; padding-left:0;}
+  .stat .label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .stat .val{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    color:var(--teal);
+    margin-top:2px;
+  }
+
+  /* NAV — AGENT SELECT */
+  nav{
+    position:sticky; top:0; z-index:60;
+    background:rgba(15,25,35,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--panel-edge);
+    display:flex;
+    justify-content:center;
+    margin-top:34px;
+  }
+  .tab{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    background:none;
+    border:none;
+    padding:16px 20px 13px;
+    cursor:pointer;
+    position:relative;
+    transition:.2s;
+  }
+  .tab .eyebrow{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;
+    letter-spacing:2px;
+    color:var(--text-dim);
+    opacity:.6;
+    margin-bottom:2px;
+  }
+  .tab::after{
+    content:'';
+    position:absolute; bottom:0; left:50%; width:0; height:3px;
+    background:var(--red);
+    transition:.25s; transform:translateX(-50%);
+  }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--text);}
+  .tab.active::after{width:70%;}
+
+  section{
+    max-width:920px;
+    margin:0 auto;
+    padding:44px 20px 80px;
+    display:none;
+  }
+  section.active{display:block; animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .section-title{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.6rem,5vw,2.2rem);
+    margin:4px 0 26px;
+    letter-spacing:1px;
+  }
+
+  /* RESEAUX */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    padding:20px 22px;
+    transition:.2s;
+    position:relative;
+  }
+  .card:hover{border-color:var(--card-color, var(--red)); transform:translateY(-2px);}
+  .card .platform{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--card-color, var(--red));
+  }
+  .card .handle{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    margin:4px 0 4px;
+  }
+  .card .desc{
+    font-size:.85rem;
+    color:var(--text-dim);
+  }
+
+  /* CLIPS — REPLAYS */
+  .clip-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:16px;
+  }
+  .clip{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    overflow:hidden;
+  }
+  .clip-thumb{
+    aspect-ratio:16/10;
+    background:
+      repeating-linear-gradient(115deg, rgba(255,70,85,.08) 0 8px, transparent 8px 16px),
+      linear-gradient(160deg,#1B2731,#101922);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--text-dim);
+    position:relative;
+  }
+  .clip-thumb::before{
+    content:'REPLAY';
+    position:absolute; top:8px; left:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;
+    color:var(--red);
+    letter-spacing:2px;
+  }
+  .clip-info{padding:14px 16px 18px;}
+  .clip-title{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+  .clip-meta{
+    margin-top:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--teal);
+    letter-spacing:1px;
+  }
+
+  /* MEMES — SPRAYS */
+  .meme-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:14px;
+  }
+  .meme{
+    aspect-ratio:1;
+    background:radial-gradient(circle at 30% 30%, rgba(255,70,85,.25), transparent 60%), var(--panel);
+    border:1px dashed var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--text-dim);
+    letter-spacing:1px;
+  }
+
+  /* ART — COLLECTION */
+  .art-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:14px;
+  }
+  .art{
+    aspect-ratio:3/4;
+    background:linear-gradient(150deg, var(--panel), #0F1923);
+    border:1px solid var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    display:flex; align-items:flex-end;
+    padding:14px;
+    position:relative;
+  }
+  .art::before{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(135deg, transparent 60%, rgba(70,195,178,.1) 100%);
+  }
+  .art span{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--gold);
+    position:relative;
+  }
+
+  /* WISHLIST — STORE */
+  .wish-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+  }
+  .wish-item{
+    background:var(--panel);
+    border:1px solid var(--panel-edge);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    transition:.2s;
+  }
+  .wish-item:hover{border-color:var(--gold);}
+  .wish-item.got{opacity:.45;}
+  .wish-item.got .wish-name{text-decoration:line-through;}
+  .wish-name{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+  .wish-cat{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;
+    letter-spacing:2px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+  .wish-price{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:1rem;
+    color:var(--gold);
+    white-space:nowrap;
+  }
+  .wish-check{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;
+    letter-spacing:1px;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    padding:4px 8px;
+    cursor:pointer;
+    background:none;
+  }
+  .wish-item.got .wish-check{color:var(--text-dim); border-color:var(--panel-edge);}
+
+  .note{
+    margin-top:28px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--text-dim);
+    opacity:.7;
+    line-height:1.7;
+    border-top:1px dashed var(--panel-edge);
+    padding-top:16px;
+  }
+
+  footer{
+    text-align:center;
+    padding:26px 20px 50px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--text-dim);
+    opacity:.5;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="rank-card">
+    <div class="rank-top">
+      <div>
+        <div class="tag">// AGENT SELECT</div>
+        <h1>MIMI<span>SM___</span></h1>
+        <div class="role-line">STREAMEUSE VALORANT · CRÉATRICE DE CONTENU · AULNAY-SOUS-BOIS</div>
+      </div>
+      <div class="rank-badge">
+        <div class="peak">PEAK RANK</div>
+        <div class="value">PLATINE 2</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="label">Sensibilité</div>
+        <div class="val">800 DPI / 0.39</div>
+      </div>
+      <div class="stat">
+        <div class="label">Live</div>
+        <div class="val">MAR · JEU · SAM</div>
+      </div>
+      <div class="stat">
+        <div class="label">Best clip</div>
+        <div class="val">53K vues</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <button class="tab active" data-target="reseaux"><span class="eyebrow">Loadout</span>Réseaux</button>
+  <button class="tab" data-target="clips"><span class="eyebrow">Replays</span>Clips viraux</button>
+  <button class="tab" data-target="memes"><span class="eyebrow">Sprays</span>Memes</button>
+  <button class="tab" data-target="art"><span class="eyebrow">Collection</span>Art</button>
+  <button class="tab" data-target="wishlist"><span class="eyebrow">Store</span>Wishlist</button>
+</nav>
+
+<section id="reseaux" class="active">
+  <div class="tag">// 01 LOADOUT</div>
+  <div class="section-title">Tous mes réseaux</div>
+  <div class="grid">
+    <a class="card" href="https://twitch.tv/mimism___" target="_blank" style="--card-color:#9146FF">
+      <div class="platform">Twitch</div>
+      <div class="handle">mimism___</div>
+      <div class="desc">Live Valorant — mar / jeu / sam</div>
+    </a>
+    <a class="card" href="https://tiktok.com/@mimism___" target="_blank" style="--card-color:#46C3B2">
+      <div class="platform">TikTok</div>
+      <div class="handle">@mimism___</div>
+      <div class="desc">Clips gaming, formats courts</div>
+    </a>
+    <a class="card" href="https://instagram.com/_mimibrz" target="_blank" style="--card-color:#FF4655">
+      <div class="platform">Instagram</div>
+      <div class="handle">@_mimibrz</div>
+      <div class="desc">Reels & coulisses</div>
+    </a>
+    <a class="card" href="#" target="_blank" style="--card-color:#C9A227">
+      <div class="platform">Discord</div>
+      <div class="handle">Rejoindre le serveur</div>
+      <div class="desc">Communauté & rôles abonnés</div>
+    </a>
+    <a class="card" href="#" target="_blank" style="--card-color:#FF4655">
+      <div class="platform">YouTube</div>
+      <div class="handle">Shorts</div>
+      <div class="desc">Repost des meilleurs clips</div>
+    </a>
+    <a class="card" href="https://bymia.fr" target="_blank" style="--card-color:#46C3B2">
+      <div class="platform">Boutique</div>
+      <div class="handle">bymia.fr</div>
+      <div class="desc">Friperie & pièces streetwear</div>
+    </a>
+  </div>
+  <p class="note">Remplace les liens "#" (Discord, YouTube) par tes vraies URLs quand tu les as.</p>
+</section>
+
+<section id="clips">
+  <div class="tag">// 02 REPLAYS</div>
+  <div class="section-title">Clips qui ont marché</div>
+  <div class="clip-grid">
+    <div class="clip">
+      <div class="clip-thumb">MINIATURE À AJOUTER</div>
+      <div class="clip-info">
+        <div class="clip-title">Ce qu'il a fait en 0.3 seconde...</div>
+        <div class="clip-meta">53K VUES · TIKTOK</div>
+      </div>
+    </div>
+    <div class="clip">
+      <div class="clip-thumb">MINIATURE À AJOUTER</div>
+      <div class="clip-info">
+        <div class="clip-title">Personne ne s'attendait à ça</div>
+        <div class="clip-meta">31K VUES · TIKTOK</div>
+      </div>
+    </div>
+    <div class="clip">
+      <div class="clip-thumb">MINIATURE À AJOUTER</div>
+      <div class="clip-info">
+        <div class="clip-title">Le clip qui a tout changé</div>
+        <div class="clip-meta">20K VUES · TIKTOK</div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Remplace les miniatures par tes vraies images et ajoute un lien vers chaque vidéo (attribut href sur .clip).</p>
+</section>
+
+<section id="memes">
+  <div class="tag">// 03 SPRAYS</div>
+  <div class="section-title">Pour ceux qui veulent des memes</div>
+  <div class="meme-grid">
+    <div class="meme">MEME 1<br>à uploader</div>
+    <div class="meme">MEME 2<br>à uploader</div>
+    <div class="meme">MEME 3<br>à uploader</div>
+    <div class="meme">MEME 4<br>à uploader</div>
+  </div>
+  <p class="note">Remplace chaque bloc par une image (background-image). Grille responsive déjà en place.</p>
+</section>
+
+<section id="art">
+  <div class="tag">// 04 COLLECTION</div>
+  <div class="section-title">Mon art</div>
+  <div class="art-grid">
+    <div class="art"><span>PIÈCE 01</span></div>
+    <div class="art"><span>PIÈCE 02</span></div>
+    <div class="art"><span>PIÈCE 03</span></div>
+  </div>
+  <p class="note">Espace pour ton design graphique / animation. Remplace le fond par tes visuels.</p>
+</section>
+
+<section id="wishlist">
+  <div class="tag">// 05 STORE</div>
+  <div class="section-title">Ma wishlist</div>
+  <div class="wish-grid">
+    <div class="wish-item">
+      <div>
+        <div class="wish-name">Logitech Brio 4K</div>
+        <div class="wish-cat">Setup stream</div>
+      </div>
+      <div class="wish-price">199€</div>
+      <button class="wish-check" onclick="this.closest('.wish-item').classList.toggle('got')">OBTENU</button>
+    </div>
+    <div class="wish-item">
+      <div>
+        <div class="wish-name">Elgato Wave:3</div>
+        <div class="wish-cat">Setup stream</div>
+      </div>
+      <div class="wish-price">149€</div>
+      <button class="wish-check" onclick="this.closest('.wish-item').classList.toggle('got')">OBTENU</button>
+    </div>
+    <div class="wish-item">
+      <div>
+        <div class="wish-name">Tablette graphique</div>
+        <div class="wish-cat">Art</div>
+      </div>
+      <div class="wish-price">120€</div>
+      <button class="wish-check" onclick="this.closest('.wish-item').classList.toggle('got')">OBTENU</button>
+    </div>
+  </div>
+  <p class="note">Remplace par tes vraies envies (matériel stream, art, perso). Clique "OBTENU" pour barrer un item une fois reçu — pratique si tu partages ce lien à ta communauté pour des cadeaux/dons.</p>
+</section>
+
+<footer>MIMISM___ // AULNAY-SOUS-BOIS // DOSSIER TOUJOURS ACTIF</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('section');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
