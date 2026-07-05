@@ -371,6 +371,37 @@
     color:var(--gold);
     white-space:nowrap;
   }
+.planning-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:10px;
+}
+.day-card{
+  background:var(--panel);
+  border:1px solid var(--panel-edge);
+  padding:16px 10px;
+  text-align:center;
+  clip-path:polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  display:block;
+  transition:.2s;
+}
+.day-card[href^="http"]{cursor:pointer;}
+.day-card[href^="http"]:hover{border-color:var(--red); transform:translateY(-3px);}
+.day-card.today{border-color:var(--red); box-shadow:0 0 0 1px var(--red);}
+.day-name{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:2px;
+  color:var(--text-dim);
+}
+.day-status{
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:1.1rem;
+  margin-top:6px;
+}
+.day-status.live{color:var(--red);}
+.day-status.off{color:var(--text-dim); opacity:.5;}
 
   .note{
     margin-top:28px;
@@ -427,10 +458,9 @@
 </header>
 
 <nav>
+  <button class="tab" data-target="planning"><span class="eyebrow">Live</span>Planning</button>
   <button class="tab active" data-target="reseaux"><span class="eyebrow">Loadout</span>Réseaux</button>
   <button class="tab" data-target="clips"><span class="eyebrow">Replays</span>Clips viraux</button>
-  <button class="tab" data-target="memes"><span class="eyebrow">Sprays</span>Memes</button>
-  <button class="tab" data-target="art"><span class="eyebrow">Collection</span>Art</button>
   <button class="tab" data-target="wishlist"><span class="eyebrow">Store</span>Wishlist</button>
 </nav>
 
@@ -508,27 +538,19 @@
   <p class="note">Regarde la suite des clips en cliquant dessus</p>
 </section>
 
-<section id="memes">
-  <div class="tag">// 03 SPRAYS</div>
-  <div class="section-title">Pour ceux qui veulent des memes</div>
-  <div class="meme-grid">
-    <div class="meme">MEME 1<br>à uploader</div>
-    <div class="meme">MEME 2<br>à uploader</div>
-    <div class="meme">MEME 3<br>à uploader</div>
-    <div class="meme">MEME 4<br>à uploader</div>
+<section id="planning">
+  <div class="tag">// 03 LIVE</div>
+  <div class="section-title">Planning stream</div>
+  <div class="planning-grid">
+    <a class="day-card" data-day="1" href="#"><div class="day-name">Lun</div><div class="day-status off">OFF</div></a>
+    <a class="day-card" data-day="2" href="https://twitch.tv/mimism___" target="_blank"><div class="day-name">Mar</div><div class="day-status live">20H00</div></a>
+    <a class="day-card" data-day="3" href="#"><div class="day-name">Mer</div><div class="day-status off">OFF</div></a>
+    <a class="day-card" data-day="4" href="https://twitch.tv/mimism___" target="_blank"><div class="day-name">Jeu</div><div class="day-status live">20H00</div></a>
+    <a class="day-card" data-day="5" href="#"><div class="day-name">Ven</div><div class="day-status off">OFF</div></a>
+    <a class="day-card" data-day="6" href="https://twitch.tv/mimism___" target="_blank"><div class="day-name">Sam</div><div class="day-status live">18H00</div></a>
+    <a class="day-card" data-day="0" href="#"><div class="day-name">Dim</div><div class="day-status off">OFF</div></a>
   </div>
-  <p class="note">Remplace chaque bloc par une image (background-image). Grille responsive déjà en place.</p>
-</section>
-
-<section id="art">
-  <div class="tag">// 04 COLLECTION</div>
-  <div class="section-title">Mon art</div>
-  <div class="art-grid">
-    <div class="art"><span>PIÈCE 01</span></div>
-    <div class="art"><span>PIÈCE 02</span></div>
-    <div class="art"><span>PIÈCE 03</span></div>
-  </div>
-  <p class="note">Espace pour ton design graphique / animation. Remplace le fond par tes visuels.</p>
+  <p class="note">Clique sur un jour de live pour aller direct sur la chaîne Twitch. Le jour actuel est surligné automatiquement.</p>
 </section>
 
 <section id="wishlist">
@@ -573,6 +595,13 @@
       document.getElementById(tab.dataset.target).classList.add('active');
     });
   });
+
+  const today = new Date().getDay();
+  document.querySelectorAll('.day-card').forEach(card=>{
+  if(parseInt(card.dataset.day)===today){
+    card.classList.add('today');
+  }
+});
 </script>
 
 </body>
